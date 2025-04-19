@@ -1,0 +1,511 @@
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/accounts.css">
+    <link rel="stylesheet" href="/stylesheets/nav.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/datatables/datatables.css">
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+
+</head>
+<body>
+    <div class="maincontainer">
+        <%- include('../includes/nav', { path: path }) %>
+        <div class="accounts">
+            <%- include('welcomeHeader', { data: data }) %> <!-- Pass 'data' here -->
+            <data class="second_container">
+                <div class="action-buttons">
+                    <button id="addAccBTN" type="button" class="add btn btn-primary">
+                        <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+                        </svg>
+                        Add</button>
+                </div>
+                <div class="tablecontainer">
+                    <table id="accountsTable" class="display nowrap" style="z-index: 1;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>First Name</th>
+                                <th>Middle Name</th>
+                                <th>Last Name</th>
+                                <th>Date of Birth</th>
+                                <th>Age</th>
+                                <th>Role</th>
+                                <th>Date Added</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </data>
+        </div>
+
+        <div class="add-accounts-container" style="width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); position: fixed;">
+            <form id="addAccForm" style="display: none;" class="form">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <p class="title" style="margin: 0;">Add Account</p>
+                    <button type="button" class="close btn btn-danger" style="margin: 0; height: auto; font-size: 10px;">
+                        <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"/>
+                      </svg>
+                      Close
+                      </button>
+                </div>            
+                
+                <label>
+                    <input required name="email" placeholder="" type="email" class="input">
+                    <span>Email</span>
+                  </label>
+
+                  <label>
+                    <input required name="password" placeholder="" type="password" class="input">
+                    <span>Password</span>
+                  </label>
+                  <label>
+                    <input required name="firstname" placeholder="" type="text" class="input" 
+                           pattern="^[^\d]*$" title="Numbers are not allowed.">
+                    <span>First name</span>
+                  </label>
+                  <label>
+                    <input name="middlename" placeholder="" type="text" class="input" 
+                           pattern="^[^\d]*$" title="Numbers are not allowed.">
+                    <span>Middle name</span>
+                  </label>
+                  <label>
+                    <input required name="lastname" placeholder="" type="text" class="input" 
+                           pattern="^[^\d]*$" title="Numbers are not allowed.">
+                    <span>Last name</span>
+                  </label>
+    
+                    <div class="flex">
+                        <label>
+                            <input required name="bday" placeholder="" type="date" class="input" id="bday">
+                        <span>Birthday</span>
+                        </label>
+                        <label>
+                            <input name="age" placeholder="" type="text" class="input w-full" id="age" readonly>
+                            <span>Age</span>
+                        </label>
+                    </div>                
+                <label class="flex-1">
+                    <select name="role" class="input w-full" id="sex" required>
+                    <option value="">Select</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Cashier">Cashier</option>
+                    <option value="Loan Officer">Loan Officer</option>
+                    </select>
+                    <span>Role</span>
+                </label>
+                <button class="submit">Submit</button>
+            </form>
+
+            <form id="EditAccForm" style="display: none;" class="form">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <p class="title" style="margin: 0;">Edit Account</p>
+                    <button type="button" class="close btn btn-danger" style="margin: 0; height: auto; font-size: 10px;">
+                        <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"/>
+                      </svg>
+                      Close
+                      </button>
+                </div>            
+                
+                  <label>
+                    <input required name="id" placeholder="" type="number" class="input" readonly style="display: none;">
+                    <span>id</span>
+                  </label>
+                  <label>
+                    <input required name="email" placeholder="" type="email" class="input">
+                    <span>Email</span>
+                  </label>
+
+                  <label>
+                    <input required name="password" placeholder="" type="password" class="input">
+                    <span>Password</span>
+                  </label>
+                  <label>
+                    <input required name="firstname" placeholder="" type="text" class="input" 
+                           pattern="^[^\d]*$" title="Numbers are not allowed.">
+                    <span>First name</span>
+                  </label>
+                  <label>
+                    <input name="middlename" placeholder="" type="text" class="input" 
+                           pattern="^[^\d]*$" title="Numbers are not allowed.">
+                    <span>Middle name</span>
+                  </label>
+                  <label>
+                    <input required name="lastname" placeholder="" type="text" class="input" 
+                           pattern="^[^\d]*$" title="Numbers are not allowed.">
+                    <span>Last name</span>
+                  </label>
+    
+                    <div class="flex">
+                        <label>
+                            <input required name="bday" placeholder="" type="date" class="input" id="bdayedit">
+                        <span>Birthday</span>
+                        </label>
+                        <label>
+                            <input name="age" placeholder="" type="text" class="input w-full" id="ageedit" readonly>
+                            <span>Age</span>
+                        </label>
+                    </div>                
+                <label class="flex-1">
+                    <select name="role" class="input w-full" id="sex" required>
+                    <option value="">Select</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Cashier">Cashier</option>
+                    <option value="Loan Officer">Loan Officer</option>
+                    </select>
+                    <span>Role</span>
+                </label>
+                <button class="submit">Save</button>
+            </form>
+        </div>
+
+        <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalCenterLongTitle">Delete Account?</h5>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/datatables/jquery.js"></script>
+    <script src="/datatables/datatables.js"></script>
+    <script src="/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/datatables/dataTables.buttons.js"></script>
+    <script src="/datatables/buttons.dataTables.js"></script>
+    <script src="/datatables/pdfmake.min.js"></script>
+    <script src="/datatables/vfs_fonts.js"></script>
+    <script src="/datatables/buttons.html5.min.js"></script>
+
+
+    <script>
+        let accounts = JSON.parse(`<%- JSON.stringify(accounts) %>`);
+
+        $(document).ready( function () {
+            const addaccountscontainer = document.querySelector(".add-accounts-container");
+            const addAccForm = document.querySelector("#addAccForm");
+            const closeAccForm = document.querySelector('#addAccForm .close.btn.btn-danger');
+
+            const EditAccForm = document.querySelector("#EditAccForm");
+            const closeEditAccForm = document.querySelector('#EditAccForm .close.btn.btn-danger');
+
+            const modalEl = document.getElementById('deleteModalCenter');
+            const deleteModal = new bootstrap.Modal(modalEl);
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            let borrowersTable = $('#borrowersTable').DataTable({
+                    pageLength: 10,
+                    paging: true,
+                    scrollX: true,
+                    order: [[0, 'desc']],
+                    layout: {
+                        topStart: [
+                            {
+                            
+                            },
+                            'pageLength' // Add pageLength dropdown
+                        ],
+                        topEnd: ['search'], // Add search bar on the right
+                        bottomEnd: ['info', 'paging'] // Add pagination and info text at the bottom
+                    },
+                    columnDefs: [
+                        { width: "150px", targets: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                        { width: "20px", targets: 0},
+                        { width: "250px", targets: 10 } // last column                
+                    ]
+                });
+            
+            addAccForm.addEventListener('submit', function(event) {
+                event.preventDefault();  // Prevent the form from submitting normally
+
+                const formData = new FormData(this);  // Use FormData to grab form input values
+                // Convert FormData to URL-encoded format
+                const urlEncodedData = new URLSearchParams(formData).toString();
+
+                fetch('/admin/addAccount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // Ensure proper content type
+                    },
+                    body: urlEncodedData  // Send data in URL-encoded format
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Account added successfully!') {
+                        window.location.reload();
+                    } else {
+                        alert('Error adding Account');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            });
+
+            EditAccForm.addEventListener('submit', function(event) {
+                event.preventDefault();  // Prevent the form from submitting normally
+
+                const formData = new FormData(this);  // Use FormData to grab form input values
+                // Convert FormData to URL-encoded format
+                const urlEncodedData = new URLSearchParams(formData).toString();
+
+                fetch('/admin/addAccount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // Ensure proper content type
+                    },
+                    body: urlEncodedData  // Send data in URL-encoded format
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Account updated successfully!') {
+                        window.location.reload();
+                    } else {
+                        alert('Error adding Account');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            });
+
+            $('#accountsTable').on('click', '.edit-btn', function () {
+                const row = $(this).closest('tr');
+
+                const id = row.find('td').eq(0).text().trim();
+                const email = row.find('td').eq(1).text().trim();
+                const password = row.find('td').eq(2).text().trim();
+                const firstname = row.find('td').eq(3).text().trim();
+                const middlename = row.find('td').eq(4).text().trim();
+                const lastname = row.find('td').eq(5).text().trim();
+
+                const birthday = row.find('td').eq(6).text().trim();
+                const parsedDate = new Date(birthday);
+                const formattedBirthday = !isNaN(parsedDate) ? parsedDate.toISOString().split('T')[0] : '';
+
+                const age = row.find('td').eq(7).text().trim();
+                const role = row.find('td').eq(8).text().trim();
+               
+                // Show the edit form and hide others
+                addaccountscontainer.style.display = 'flex';
+                EditAccForm.style.display = 'flex';
+                addAccForm.style.display = 'none';
+
+                requestAnimationFrame(() => {
+                    addaccountscontainer.classList.add('show');
+                });
+
+                // Fill in the form values
+                EditAccForm.querySelector('input[name="id"]').value = id;
+                EditAccForm.querySelector('input[name="email"]').value = email;
+                EditAccForm.querySelector('input[name="password"]').value = password;
+                EditAccForm.querySelector('input[name="firstname"]').value = firstname;
+                EditAccForm.querySelector('input[name="middlename"]').value = middlename;
+                EditAccForm.querySelector('input[name="lastname"]').value = lastname;
+                EditAccForm.querySelector('input[name="bday"]').value = formattedBirthday;
+                EditAccForm.querySelector('input[name="age"]').value = age;
+                EditAccForm.querySelector('select[name="role"]').value = role;
+               
+            });
+
+            $('#accountsTable').on('click', '.delete-btn', function () {
+                const row = $(this).closest('tr');
+                const id = row.find('td').eq(0).text().trim();
+                
+                console.log("Delete ID:", id);
+                modalEl.querySelector('.modal-body').innerHTML = "ID: " + id;
+                modalEl.querySelector('#confirmDeleteBtn').setAttribute('data-id', id);
+                deleteModal.show();
+            });
+
+
+            confirmDeleteBtn.addEventListener('click', async function () {
+                const accountid = this.getAttribute('data-id');
+                console.log("Confirmed deletion of ID:", accountid);
+
+                try {
+                    const response = await fetch('/admin/deleteAccount', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'  // <-- Correct content type for JSON
+                        },
+                        body: JSON.stringify({ id: accountid })  // Send the data as JSON
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        console.log(result.message);
+                        window.location.reload();
+                        // Optionally remove the row from the table, show a toast, etc.
+                    } else {
+                        console.error(result.message);
+                        alert("Failed to delete borrower: " + result.message);
+                    }
+                } catch (err) {
+                    console.error("Error during fetch:", err);
+                }
+
+                // Hide modal
+                const modalEl = document.getElementById('deleteModalCenter');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            });
+
+
+            if (accounts) {
+
+                const dataTable = $('#accountsTable').DataTable();
+
+                // Clear existing data
+                dataTable.clear();
+
+                // Add new rows
+                accounts.forEach(account => {
+                    
+                    // Add each borrower data as a row to the data table
+                    dataTable.row.add([
+                        account.id,
+                        account.email,
+                        account.password,
+                        account.first_name,
+                        account.middle_name,
+                        account.last_name,
+                        formatDate(account.date_of_birth),
+                        account.age,
+                        account.role,
+                        formatDate(account.date_added), // Format birthday
+                        `
+                            <div class="action_table_btn">
+                                <button type="button" class="edit-btn btn btn-sm btn-success" style="font-size: 11px;">
+                                    <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Edit
+                                </button>
+                                <button type="button" class="delete-btn btn btn-sm btn-danger" style="font-size: 11px;">
+                                    <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Delete
+                                </button>
+                            </div>     
+                        `
+                    ]).draw();
+                });
+
+                // Function to format date
+                function formatDate(dateString) {
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
+                }
+
+                // Redraw the table with new data
+                dataTable.draw();
+            }
+
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            }
+
+            const addaccount = document.querySelector('#addAccBTN');
+            addaccount.onclick = function() {
+                console.log(addaccountscontainer);
+                addaccountscontainer.style.display = "flex";
+                addAccForm.style.display = 'flex';
+                EditAccForm.style.display = 'none';
+                
+                requestAnimationFrame(() => {
+                    addaccountscontainer.classList.add('show');
+                });
+            };
+
+            document.getElementById('bday').addEventListener('change', function () {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                
+                // Ensure the birthDate is valid
+                if (isNaN(birthDate)) {
+                    document.getElementById('age').value = '';
+                    return;
+                }
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                document.getElementById('age').value = age;
+            });
+
+
+            document.getElementById('bdayedit').addEventListener('change', function () {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                
+                // Ensure the birthDate is valid
+                if (isNaN(birthDate)) {
+                    document.getElementById('ageedit').value = '';
+                    return;
+                }
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                document.getElementById('ageedit').value = age;
+            });
+
+
+            closeAccForm.onclick = function() {
+                addaccountscontainer.style.display = 'none';
+                addAccForm.style.display = "none";
+                EditAccForm.style.display = 'none';
+                
+                requestAnimationFrame(() => {
+                    addaccountscontainer.classList.remove('show');
+                });
+            };
+
+            closeEditAccForm.onclick = function() {
+                addaccountscontainer.style.display = 'none';
+                addAccForm.style.display = "none";
+                EditAccForm.style.display = 'none';
+                
+                requestAnimationFrame(() => {
+                    addaccountscontainer.classList.remove('show');
+                });
+            };
+
+        });
+    </script>
+</body>

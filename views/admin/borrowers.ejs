@@ -1,0 +1,911 @@
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/borrowers.css">
+    <link rel="stylesheet" href="/stylesheets/nav.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/datatables/datatables.css">
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+
+</head>
+<body>
+    <div class="maincontainer">
+        <%- include('/includes/nav', { path: path }) %>
+        
+        <div class="borrowers">
+            <%- include('welcomeHeader', { data: data }) %> <!-- Pass 'data' here -->
+            <data class="second_container">
+                <div class="action-buttons">
+                    <button type="button" class="add btn btn-primary">
+                        <svg class="w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z" clip-rule="evenodd"/>
+                        </svg>
+                        Add</button>
+                </div>
+                <div class="tablecontainer">
+                    <table id="borrowersTable" class="display nowrap" style="z-index: 1;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
+                                <th>Birthday</th>
+                                <th>Sex</th>
+                                <th>Address</th>
+                                <th>Contact Number</th>
+                                <th>Contact Person</th>
+                                <th>Source of Income</th>
+                                <th>Date Added</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </data>
+        </div>
+        <div class="add-borrowers-container" style="width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); position: fixed;">
+            <form id="addBorrowerForm" style="display: none;" class="form">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <p class="title" style="margin: 0;">Add Borrower</p>
+                    <button type="button" class="close btn btn-danger" style="margin: 0; height: auto; font-size: 10px;">
+                        <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"/>
+                      </svg>
+                      Close
+                      </button>
+                </div>                
+                <div class="flex">
+                    <label>
+                        <input required name="firstname" placeholder="" type="text" class="input" 
+                               pattern="^[^\d]*$" title="Numbers are not allowed.">
+                        <span>Firstname</span>
+                      </label>
+                    
+                      <label>
+                        <input required name="lastname" placeholder="" type="text" class="input" 
+                               pattern="^[^\d]*$" title="Numbers are not allowed.">
+                        <span>Lastname</span>
+                      </label>
+                </div>  
+
+                <label>
+                    <input required name="bday" placeholder="" type="date" class="input" id="bday">
+                    <span>Birthday</span>
+                </label>
+                
+                <div class="flex">
+                    <label class="flex-1" style="width: 50%;">
+                        <input name="age" placeholder="" type="text" class="input w-full" id="age" readonly>
+                        <span>Age</span>
+                    </label>
+
+                    <label class="flex-1" style="width: 50%;">
+                        <select name="sex" class="input w-full" id="sex" required>
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                        </select>
+                        <span>Sex</span>
+                    </label>
+                </div>
+
+                <label>
+                    <input 
+                        required 
+                        name="contact"
+                        placeholder="" 
+                        type="tel" 
+                        class="input" 
+                        pattern="^\+63\d{10}$" 
+                        title="Must start with +63 and contain 10 more digits (e.g., +639123456789)">
+                    <span>Contact Number</span>
+                </label>
+                
+                <label>
+                    <input name="contact_person" placeholder="" type="text" class="input" required>
+                    <span>Contact Person</span>
+                </label>
+                <label>
+                    <input name="address" placeholder="" type="text" class="input" required>
+                    <span>Address</span>
+                </label>
+                <label>
+                    <input name="SourceIncome" placeholder="" type="text" class="input" required>
+                    <span>Source of Income</span>
+                </label>
+                <button class="submit">Submit</button>
+            </form>
+
+            <form id="editBorrowerForm" style="display: none;" class="form">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <p class="title" style="margin: 0;">Edit Borrower</p>
+                    <button type="button" class="close btn btn-danger" style="margin: 0; height: auto; font-size: 10px;">
+                        <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"/>
+                      </svg>
+                      Close
+                      </button>
+                </div>                
+                <div class="flex">
+                    <label style="display: none;">
+                        <input readonly name="id" placeholder="" type="number" class="input" 
+                               required step="1" title="Only integers are allowed.">
+                        <span>Id</span>
+                    </label>                    
+
+                    <label>
+                        <input required name="firstname" placeholder="" type="text" class="input" 
+                               pattern="^[^\d]*$" title="Numbers are not allowed.">
+                        <span>Firstname</span>
+                      </label>
+                    
+                      <label>
+                        <input required name="lastname" placeholder="" type="text" class="input" 
+                               pattern="^[^\d]*$" title="Numbers are not allowed.">
+                        <span>Lastname</span>
+                      </label>
+                </div>  
+                        
+                <label>
+                    <input required name="bday" placeholder="" type="date" class="input" id="bdayedit">
+                    <span>Birthday</span>
+                </label>
+                
+                <div class="flex">
+                    <label class="flex-1" style="width: 50%;">
+                        <input name="age" placeholder="" type="text" class="input w-full" id="ageedit" readonly>
+                        <span>Age</span>
+                    </label>
+
+                    <label class="flex-1" style="width: 50%;">
+                        <select name="sex" class="input w-full" id="sex" required>
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                        </select>
+                        <span>Sex</span>
+                    </label>
+                </div>
+
+                <label>
+                    <input 
+                        required 
+                        name="contact"
+                        placeholder="" 
+                        type="tel" 
+                        class="input" 
+                        pattern="^\+63\d{10}$" 
+                        title="Must start with +63 and contain 10 more digits (e.g., +639123456789)">
+                    <span>Contact Number</span>
+                </label>
+                
+                <label>
+                    <input name="contact_person" placeholder="" type="text" class="input" required>
+                    <span>Contact Person</span>
+                </label>
+                <label>
+                    <input name="address" placeholder="" type="text" class="input" required>
+                    <span>Address</span>
+                </label>
+                <label>
+                    <input name="SourceIncome" placeholder="" type="text" class="input" required>
+                    <span>Source of Income</span>
+                </label>
+                
+                <button class="submit">Save</button>
+            </form>
+
+            <form id="addLoansForm" style="display: none; min-width: 400px !important;" class="form">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <p class="title" style="margin: 0;">Add Loans</p>
+                    <button type="button" class="close btn btn-danger" style="margin: 0; height: auto; font-size: 10px;">
+                        <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18 17.94 6M18 18 6.06 6"/>
+                      </svg>
+                      Close
+                      </button>
+                </div>    
+                
+                <div class="flex" style="gap: 0.3rem; width: 100%;">
+                    <label style="flex: 0 0 30%;">
+                      <input readonly name="borrowerid" placeholder="" type="number" class="input" 
+                             required step="1" title="Only integers are allowed.">
+                      <span>Borrower ID</span>
+                    </label>                    
+                  
+                    <label style="flex: 1;">
+                      <input readonly required name="FullName" placeholder="" type="text" class="input" 
+                             pattern="^[^\d]*$" title="Numbers are not allowed.">
+                      <span>Name</span>
+                    </label>    
+                  </div>
+                  
+            
+                <label>
+                    <span style="padding-bottom: 7px;">₱</span>
+                    <input style="padding-left: 30px;" name="loanamount" placeholder="" type="number" class="input" 
+                           required step="1" title="Only integers are allowed.">
+                    <span>Loan Amount</span>
+                </label>    
+
+                <label>
+                    <input name="term" placeholder="" type="number" class="input" 
+                           required step="1" title="Only integers are allowed.">
+                    <span>Term (Month)</span>
+                </label>                  
+
+                <div class="flex">
+                    <label>
+                        <input name="interest" placeholder="" type="number" class="input" 
+                            required step="0.01" title="Decimal values are allowed.">
+                        <span>Interest</span>
+                    </label>  
+                    <label>
+                        <span style="padding-bottom: 7px;">₱</span>
+                        <input style="padding-left: 30px;" name="monthly" placeholder="" type="text" class="input" readonly>
+                        <span>Monthly</span>
+                    </label>                    
+                    <label>
+                        <span style="padding-bottom: 7px;">₱</span>
+                        <input style="padding-left: 30px;" readonly name="total" placeholder="" type="number" class="input" 
+                            required step="0.01" title="Decimal values are allowed.">
+                        <span>Total</span>
+                    </label>  
+                </div>  
+
+                <label>
+                    <input name="due_date" placeholder="" type="date" class="input" 
+                           required title="Select a due date.">
+                    <span>Due Date</span>
+                </label>                  
+                <label>
+                    <input readonly name="end_due_date" placeholder="" type="date" class="input" 
+                           required title="Select an end due date.">
+                    <span>End Due Date</span>
+                </label>
+                
+                <button class="submit">Submit</button>
+            </form>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalCenterLongTitle">Delete borrower?</h5>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="/datatables/jquery.js"></script>
+    <script src="/datatables/datatables.js"></script>
+    <script src="/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/datatables/dataTables.buttons.js"></script>
+    <script src="/datatables/buttons.dataTables.js"></script>
+    <script src="/datatables/pdfmake.min.js"></script>
+    <script src="/datatables/vfs_fonts.js"></script>
+    <script src="/datatables/buttons.html5.min.js"></script>
+
+
+    <script>
+        let borrowers = JSON.parse(`<%- JSON.stringify(borrowers) %>`);
+        
+        const addborrowbtn = document.querySelector('.add.btn.btn-primary');
+        const closeborrowbtn = document.querySelector('.add-borrowers-container .close.btn.btn-danger');
+        const borrower_container = document.querySelector('.add-borrowers-container');
+        const addBorrowerForm = document.getElementById('addBorrowerForm');
+        const editBorrowerForm = document.getElementById('editBorrowerForm');
+        const closeEditborrowbtn = document.querySelector('#editBorrowerForm .close.btn.btn-danger');
+        const addLoansForm = document.getElementById('addLoansForm');
+        const closeloanswbtn = document.querySelector('#addLoansForm .close.btn.btn-danger');
+
+        console.log(borrowers);
+        $(document).ready( function () {
+            let borrowersTable = $('#borrowersTable').DataTable({
+                    pageLength: 10,
+                    paging: true,
+                    scrollX: true,
+                    order: [[0, 'desc']],
+                    layout: {
+                        topStart: [
+                            {
+                                buttons: [
+                                    {
+                                        extend: 'copy',
+                                        className: 'btn btn-secondary btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)' // exclude last column
+                                        }
+                                    },
+                                    {
+                                        extend: 'csv',
+                                        className: 'btn btn-success btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)'
+                                        }
+                                    },
+                                    {
+                                        extend: 'excel',
+                                        className: 'btn btn-primary btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)'
+                                        }
+                                    },
+                                    {
+                                        extend: 'pdf',
+                                        className: 'btn btn-danger btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)'
+                                        }
+                                    },
+                                ]
+                            },
+                            'pageLength' // Add pageLength dropdown
+                        ],
+                        topEnd: ['search'], // Add search bar on the right
+                        bottomEnd: ['info', 'paging'] // Add pagination and info text at the bottom
+                    },
+                    columnDefs: [
+                        { width: "100px", targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+                        { width: "20px", targets: 0},
+                        { width: "250px", targets: 11 } // last column                
+                    ]
+                });
+
+            // Add Bootstrap styles to all DataTables buttons
+            borrowersTable.buttons().each(function(button, index) {
+                $(borrowersTable.buttons(index).nodes()).removeClass('dt-button').addClass('btn btn-primary btn-sm me-10');
+            });
+
+            $('#borrowersTable').on('click', '.print-btn', function () {
+                var row = $(this).closest('tr'); // Get the row that the Print button is in
+                var rowContent = row.clone(); // Clone the row content to prepare it for printing
+                // Open a new window or tab to print the content
+                var printWindow = window.open('', '_blank');
+                printWindow.document.write('<html><head><title>Report</title>');
+                
+                // Add CSS for better print styling
+                printWindow.document.write(`
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            padding: 0;
+                        }
+                        .print-header {
+                            font-size: 18px;
+                            text-align: center;
+                            font-weight: bold;
+                            margin-bottom: 20px;
+                        }
+                        .report-list {
+                            list-style-type: none;
+                            padding: 0;
+                        }
+                        .report-list li {
+                            margin-bottom: 10px;
+                        }
+                        .report-list li span {
+                            font-weight: bold;
+                        }
+                    </style>
+                `);
+
+                printWindow.document.write('</head><body>');
+                
+                // Optional: Add a header before the list (you can customize the text)
+                printWindow.document.write('<div class="print-header">Loan Borrower</div>');
+                
+                // Create a list for the row details
+                var reportContent = '<ul class="report-list">';
+                
+                // Loop through the row data, excluding the last column (Actions)
+                row.find('td').each(function(index) {
+                    if (index !== row.find('td').length - 1) { // Exclude the last column
+                        var columnHeader = $('#borrowersTable thead tr').find('th').eq(index).text(); // Get the header text for each column
+                        var columnData = $(this).text();
+                        reportContent += `<li><span>${columnHeader}:</span> ${columnData}</li>`;
+                    }
+                });
+
+                reportContent += '</ul>';
+                
+                // Write the report content
+                printWindow.document.write(reportContent);
+
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print(); // Trigger the print dialog
+            });
+
+            
+            // $('#borrowersTable').DataTable({
+            //     pageLength: 10,
+            //     paging: true,
+            //     scrollX: true,
+            //     order: [[0, 'desc']],
+            //     drawCallback: function () {
+            //         $('.dropdown-toggle').dropdown(); // Re-init Bootstrap dropdowns
+            //     },
+            //     columnDefs: [
+            //         { width: "100px", targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] },
+            //         { width: "20px", targets: 0},
+            //         { width: "200px", targets: 11 } // last column                
+            //     ]
+            // });
+
+            //action btn
+            const modalEl = document.getElementById('deleteModalCenter');
+            const modalEdit = document.getElementById('editModalCenter');
+            const deleteModal = new bootstrap.Modal(modalEl);
+
+            $('#borrowersTable').on('click', '.loan-btn', function () {
+                const row = $(this).closest('tr');
+                const id = row.find('td').eq(0).text().trim();
+                const firstname = row.find('td').eq(1).text().trim();
+                const lastname = row.find('td').eq(2).text().trim();
+                const contact = row.find('td').eq(3).text().trim();
+
+                borrower_container.style.display = 'flex';
+                addBorrowerForm.style.display = "none";
+                addLoansForm.style.display = "flex";
+                editBorrowerForm.style.display = "none";
+
+                requestAnimationFrame(() => {
+                    borrower_container.classList.add('show');
+                });
+
+                addLoansForm.querySelector('input[name="borrowerid"]').value = id;
+                addLoansForm.querySelector('input[name="FullName"]').value = firstname + " " + lastname;
+                addLoansForm.querySelector('input[name="loanamount"]').value = "";
+                addLoansForm.querySelector('input[name="interest"]').value = "";
+                addLoansForm.querySelector('input[name="term"]').value = "";
+                addLoansForm.querySelector('input[name="end_due_date"]').value = "";
+            });
+
+            $('#borrowersTable').on('click', '.edit-btn', function () {
+                const row = $(this).closest('tr');
+
+                const id = row.find('td').eq(0).text().trim();
+                const firstname = row.find('td').eq(1).text().trim();
+                const lastname = row.find('td').eq(2).text().trim();
+                const age = row.find('td').eq(3).text().trim();
+
+                const birthday = row.find('td').eq(4).text().trim();
+                const parsedDate = new Date(birthday);
+                const formattedBirthday = !isNaN(parsedDate) ? parsedDate.toISOString().split('T')[0] : '';
+
+                const sex = row.find('td').eq(5).text().trim();
+                console.log(sex);
+                const address = row.find('td').eq(6).text().trim();
+                const contact = row.find('td').eq(7).text().trim();
+                const contactperson = row.find('td').eq(8).text().trim();
+                const sourceincome = row.find('td').eq(9).text().trim();
+
+                // Show the edit form and hide others
+                borrower_container.style.display = 'flex';
+                addBorrowerForm.style.display = 'none';
+                addLoansForm.style.display = 'none';
+                editBorrowerForm.style.display = 'flex';
+
+                requestAnimationFrame(() => {
+                    borrower_container.classList.add('show');
+                });
+
+                // Fill in the form values
+                editBorrowerForm.querySelector('input[name="id"]').value = id;
+                editBorrowerForm.querySelector('input[name="firstname"]').value = firstname;
+                editBorrowerForm.querySelector('input[name="lastname"]').value = lastname;
+                editBorrowerForm.querySelector('input[name="bday"]').value = formattedBirthday;
+                editBorrowerForm.querySelector('input[name="age"]').value = age;
+                editBorrowerForm.querySelector('select[name="sex"]').value = sex;
+                editBorrowerForm.querySelector('input[name="address"]').value = address;
+                editBorrowerForm.querySelector('input[name="contact"]').value = contact;
+                editBorrowerForm.querySelector('input[name="contact_person"]').value = contactperson;
+                editBorrowerForm.querySelector('input[name="SourceIncome"]').value = sourceincome;
+            });
+
+
+            $('#borrowersTable').on('click', '.delete-btn', function () {
+                const row = $(this).closest('tr');
+                const id = row.find('td').eq(0).text().trim();
+                const firstname = row.find('td').eq(1).text().trim();
+                const lastname = row.find('td').eq(2).text().trim();
+                const contact = row.find('td').eq(3).text().trim();
+                
+                console.log("Delete ID:", id);
+                modalEl.querySelector('.modal-body').innerHTML = "ID: " + id + "<br>First Name: " + firstname + "<br>Last Name: " + lastname + "<br>Contact: " + contact;
+                modalEl.querySelector('#confirmDeleteBtn').setAttribute('data-id', id);
+                deleteModal.show();
+            });
+
+            if (borrowers) {
+
+                const dataTable = $('#borrowersTable').DataTable();
+
+                // Clear existing data
+                dataTable.clear();
+
+                // Add new rows
+                borrowers.forEach(borrower => {
+                    
+                    // Add each borrower data as a row to the data table
+                    dataTable.row.add([
+                        borrower.borrower_id,
+                        borrower.first_name,
+                        borrower.last_name,
+                        borrower.age,
+                        formatDate(borrower.birthday), // Format birthday
+                        borrower.sex,
+                        borrower.address,
+                        borrower.phone_number,
+                        borrower.contact_person,
+                        borrower.source_of_income,
+                        formatDate(borrower.date_added), // Format date_added
+                        `
+                            <div class="action_table_btn">
+                                <button type="button" class="loan-btn btn btn-sm btn-primary" style="font-size: 11px;">
+                                    <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Loan
+                                </button>
+                                <button type="button" class="print-btn btn btn-sm btn-primary" style="font-size: 11px;">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Print</button>
+                                <button type="button" class="edit-btn btn btn-sm btn-success" style="font-size: 11px;">
+                                    <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+                                        <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Edit
+                                </button>
+                                <button type="button" class="delete-btn btn btn-sm btn-danger" style="font-size: 11px;">
+                                    <svg class="w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Delete
+                                </button>
+                            </div>     
+                        `
+                    ]).draw();
+                });
+
+                // Function to format date
+                function formatDate(dateString) {
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    });
+                }
+
+                // Redraw the table with new data
+                dataTable.draw();
+
+                // Re-initialize dropdowns (optional)
+                $('.dropdown-toggle').dropdown();
+            }
+
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            }
+
+            addborrowbtn.onclick = function() {
+                borrower_container.style.display = 'flex';
+                addBorrowerForm.style.display = "flex";
+                editBorrowerForm.style.display = "none";
+                addLoansForm.style.display = "none";
+
+                requestAnimationFrame(() => {
+                    borrower_container.classList.add('show');
+                });
+            };
+
+            closeborrowbtn.onclick = function() {
+                borrower_container.style.display = 'none';
+                addBorrowerForm.style.display = "none";
+                editBorrowerForm.style.display = "none";
+                addLoansForm.style.display = "none";
+
+                requestAnimationFrame(() => {
+                    borrower_container.classList.remove('show');
+                });
+            };
+
+
+            closeEditborrowbtn.onclick = function() {
+                borrower_container.style.display = 'none';
+                addBorrowerForm.style.display = "none";
+                editBorrowerForm.style.display = "none";
+                addLoansForm.style.display = "none";
+
+                requestAnimationFrame(() => {
+                    borrower_container.classList.remove('show');
+                });
+            };
+
+            closeloanswbtn.onclick = function() {
+                borrower_container.style.display = 'none';
+                addBorrowerForm.style.display = "none";
+                editBorrowerForm.style.display = "none";
+                addLoansForm.style.display = "none";
+
+                requestAnimationFrame(() => {
+                    borrower_container.classList.remove('show');
+                });
+            };
+
+            //form submit
+            addBorrowerForm.addEventListener('submit', function(event) {
+                event.preventDefault();  // Prevent the form from submitting normally
+
+                const formData = new FormData(this);  // Use FormData to grab form input values
+                // Convert FormData to URL-encoded format
+                const urlEncodedData = new URLSearchParams(formData).toString();
+
+                fetch('/admin/addBorrower', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // Ensure proper content type
+                    },
+                    body: urlEncodedData  // Send data in URL-encoded format
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Borrower added successfully!') {
+                        window.location.reload();
+                    } else {
+                        alert('Error adding borrower');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            });
+
+            editBorrowerForm.addEventListener('submit', function(event){
+                event.preventDefault();  // Prevent the form from submitting normally
+                const formData = new FormData(this);  // Use FormData to grab form input values
+
+                // Convert FormData to URL-encoded format
+                const urlEncodedData = new URLSearchParams(formData).toString();
+                console.log(formData);
+
+                fetch('/admin/addBorrower', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // Ensure proper content type
+                    },
+                    body: urlEncodedData  // Send data in URL-encoded format
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Borrower updated successfully!') {
+                        window.location.reload();
+                    } else {
+                        alert('Error updating borrower');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });  
+            })
+
+            document.getElementById('confirmDeleteBtn').addEventListener('click', async function () {
+                const borrowerId = this.getAttribute('data-id');
+                console.log("Confirmed deletion of ID:", borrowerId);
+
+                try {
+                    const response = await fetch('/admin/deleteBorrower', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'  // <-- Correct content type for JSON
+                        },
+                        body: JSON.stringify({ id: borrowerId })  // Send the data as JSON
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        console.log(result.message);
+                        window.location.reload();
+                        // Optionally remove the row from the table, show a toast, etc.
+                    } else {
+                        console.error(result.message);
+                        alert("Failed to delete borrower: " + result.message);
+                    }
+                } catch (err) {
+                    console.error("Error during fetch:", err);
+                }
+
+                // Hide modal
+                const modalEl = document.getElementById('deleteModalCenter');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            });
+
+            addLoansForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Check if all form fields are valid
+                if (!this.checkValidity()) {
+                    this.reportValidity(); // Show built-in validation messages
+                    return; // Stop execution if form is invalid
+                }
+
+                const formData = new FormData(this); // Grab form input values
+
+                // Convert FormData to URL-encoded format
+                const urlEncodedData = new URLSearchParams(formData).toString();
+
+                fetch('/admin/addLoan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: urlEncodedData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Loan added successfully!') {
+                        window.location.reload();
+                    } else {
+                        alert('Error adding borrower');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+            });
+
+
+            // add loans
+            addLoansForm.querySelector('input[name="loanamount"]').addEventListener('input', calculateLoan);
+            addLoansForm.querySelector('input[name="interest"]').addEventListener('input', calculateLoan);
+            addLoansForm.querySelector('input[name="term"]').addEventListener('input', () => {
+                calculateLoan();
+                calculateEndDueDate(); // Recalculate end due date when term changes
+            });
+            addLoansForm.querySelector('input[name="due_date"]').addEventListener('input', calculateEndDueDate);
+
+            // Set the default due date to 1 month ahead
+            const currentDate = new Date();
+            currentDate.setMonth(currentDate.getMonth() + 1);
+
+            // Format date as YYYY-MM-DD
+            const year = currentDate.getFullYear();
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const day = currentDate.getDate().toString().padStart(2, '0');
+
+            const dueDateInput = addLoansForm.querySelector('input[name="due_date"]');
+            dueDateInput.value = `${year}-${month}-${day}`;
+
+            // Trigger input event manually
+            const inputEvent = new Event('input');
+            dueDateInput.dispatchEvent(inputEvent);
+
+            function calculateLoan() {
+                const loanInput = addLoansForm.querySelector('input[name="loanamount"]');
+                const interestInput = addLoansForm.querySelector('input[name="interest"]');
+                const termInput = addLoansForm.querySelector('input[name="term"]');
+                const totalInput = addLoansForm.querySelector('input[name="total"]');
+                const monthlyInput = addLoansForm.querySelector('input[name="monthly"]');
+
+                const principal = parseFloat(loanInput.value);
+                const monthlyRate = parseFloat(interestInput.value) / 100; // Treat as monthly %
+
+                const months = parseInt(termInput.value);
+
+                if (!isNaN(principal) && !isNaN(monthlyRate) && !isNaN(months) && months > 0) {
+                    let monthlyPayment;
+
+                    if (monthlyRate === 0) {
+                        monthlyPayment = principal / months;
+                    } else {
+                        // Amortized formula
+                        monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) /
+                            (Math.pow(1 + monthlyRate, months) - 1);
+                    }
+
+                    const totalPayment = monthlyPayment * months;
+
+                    totalInput.value = totalPayment.toFixed(2);
+                    monthlyInput.value = monthlyPayment.toFixed(2);
+                } else {
+                    totalInput.value = '';
+                    monthlyInput.value = '';
+                }
+            }
+
+            function calculateEndDueDate() {
+                const dueDateInput = addLoansForm.querySelector('input[name="due_date"]');
+                const termInput = addLoansForm.querySelector('input[name="term"]');
+                const endDueDateInput = addLoansForm.querySelector('input[name="end_due_date"]');
+                const dueDate = new Date(dueDateInput.value);
+                const term = parseInt(termInput.value);
+
+                if (!isNaN(dueDate.getTime()) && !isNaN(term) && term > 0) {
+                    const endDate = new Date(dueDate); // Clone the date
+                    endDate.setMonth(endDate.getMonth() + term);
+
+                    const year = endDate.getFullYear();
+                    const month = (endDate.getMonth() + 1).toString().padStart(2, '0');
+                    const day = endDate.getDate().toString().padStart(2, '0');
+
+                    endDueDateInput.value = `${year}-${month}-${day}`;
+                } else {
+                    endDueDateInput.value = '';
+                }
+            }
+        
+            document.getElementById('bday').addEventListener('change', function () {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                
+                // Ensure the birthDate is valid
+                if (isNaN(birthDate)) {
+                    document.getElementById('age').value = '';
+                    return;
+                }
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                document.getElementById('age').value = age;
+            });
+
+            document.getElementById('bdayedit').addEventListener('change', function () {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                
+                // Ensure the birthDate is valid
+                if (isNaN(birthDate)) {
+                    document.getElementById('ageedit').value = '';
+                    return;
+                }
+
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                document.getElementById('ageedit').value = age;
+            });
+
+            if (role === 'Loan Officer') {
+                // borrowerNav.parentElement.remove();
+                // accountsNav.parentElement.remove();
+            } else if (role === 'Cashier') {
+                document.querySelectorAll("#loansTable .delete-btn").forEach(el => el.remove());
+                document.querySelectorAll("#loansTable .edit-btn").forEach(el => el.remove());
+
+            }
+        } );
+    </script>
+</body>

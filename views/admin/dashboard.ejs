@@ -1,0 +1,136 @@
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/admin.css">
+    <link rel="stylesheet" href="/stylesheets/nav.css">
+</head>
+<body>
+    <div class="maincontainer">
+        <%- include('../includes/nav', { path: path }) %>
+        
+        <div class="dashboard">
+            <%- include('welcomeHeader', { data: data }) %> <!-- Pass 'data' here -->
+            <data class="second_container">
+                <div class="cards_parent">
+                    <div class="cards c1">
+                        <div class="icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M7 6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-2v-4a3 3 0 0 0-3-3H7V6Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M2 11a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7Zm7.5 1a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Z" clip-rule="evenodd"/>
+                                <path d="M10.5 14.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                              </svg>                          
+                        </div>
+                        <div class="values">
+                            <p class="p1">Toal Loans</p>
+                            <p class="p2"></p>
+                        </div>
+                    </div>
+
+                    <div class="cards c2">
+                        <div class="icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                              </svg>                                                      
+                        </div>
+                        <div class="values">
+                            <p class="p1">Total Unpaid Loans</p>
+                            <p class="p2"></p>
+                        </div>
+                    </div>
+                    <div class="cards c3">
+                        <div class="icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z" clip-rule="evenodd"/>
+                              </svg>                                                                                 
+                        </div>
+                        <div class="values">
+                            <p class="p1">Total Borrowers</p>
+                            <p class="p2"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards_parent">
+                    <div class="cards c4">
+                        <div class="icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                              </svg>                              
+                        </div>
+                        <div class="values">
+                            <p class="p1">Pending Loans</p>
+                            <p class="p2"></p>
+                        </div>
+                    </div>
+
+                    <div class="cards c5">
+                        <div class="icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Zm3.683 7.73a1 1 0 1 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z" clip-rule="evenodd"/>
+                              </svg>                                                          
+                        </div>
+                        <div class="values">
+                            <p class="p1">Approved Loans</p>
+                            <p class="p2"></p>
+                        </div>
+                    </div>
+
+                    <div class="cards c6">
+                        <div class="icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                              </svg>                                                                                       
+                        </div>
+                        <div class="values">
+                            <p class="p1">Rejected Loans</p>
+                            <p class="p2"></p>
+                        </div>
+                    </div>
+                </div>
+            </data>
+        </div>
+    </div>
+
+    <script>
+        let analytics = JSON.parse(`<%- JSON.stringify(locals.analytics) %>`);
+        console.log(analytics);
+
+        const resultTotalLoans = analytics.loans.reduce(
+            (acc, item) => {
+                acc.amount += parseFloat(item.amount);
+                acc.remaining += parseFloat(item.remaining);
+                return acc;
+            },
+            { amount: 0, remaining: 0 }
+            );
+
+        const statusCount = analytics.loans.reduce(
+                (acc, loan) => {
+                    acc.total += 1;
+                    if (loan.status === "Pending") acc.pending += 1;
+                    if (loan.status === "Approved") acc.approved += 1;
+                    if (loan.status === "Rejected") acc.rejected += 1;
+                    return acc;
+                },
+                { total: 0, pending: 0, approved: 0, rejected: 0 }
+            );
+
+        const total_loans = document.querySelector('.cards.c1 .p2');
+        const total_unpaidloans = document.querySelector('.cards.c2 .p2');
+        const total_borrowers = document.querySelector('.cards.c3 .p2');
+        
+        const total_pending = document.querySelector('.cards.c4 .p2');
+        const total_approved = document.querySelector('.cards.c5 .p2');
+        const total_rejected = document.querySelector('.cards.c6 .p2');
+
+        total_loans.textContent = "₱" + resultTotalLoans.amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        total_unpaidloans.textContent = "₱" + resultTotalLoans.remaining.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        
+        total_borrowers.textContent = statusCount.total.toLocaleString();
+        total_pending.textContent = statusCount.pending.toLocaleString();
+        total_approved.textContent = statusCount.approved.toLocaleString();
+        total_rejected.textContent = statusCount.rejected.toLocaleString();
+
+
+    </script>
+</body>

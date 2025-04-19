@@ -1,0 +1,248 @@
+.maincontainer, .borrowers {
+    display: flex;
+    flex-direction: row;
+    min-width: 100%;
+    justify-content: left;
+    margin: 0;
+}
+
+body {
+    overflow-x: hidden; /* prevent page from scrolling sideways */
+}
+
+.second_container {
+    padding: 20px;
+}
+
+.borrowers {
+    flex-direction: column;
+}
+
+.tablecontainer {
+    width: 80vw;
+}
+
+/* custom style */
+#borrowersTable_wrapper {
+    width: 100%;
+}
+
+#borrowersTable_wrapper td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* adjust as needed */
+  }
+
+  
+#borrowersTable_wrapper thead th {
+    font-size: 13px !important;
+    text-align: left;
+}
+
+/* #borrowersTable_wrapper th {
+    max-width: 50px;
+} */
+
+#borrowersTable_wrapper tbody tr {
+    font-size: 13px !important;
+}
+
+#borrowersTable_wrapper td {
+    text-align: left !important;
+}
+
+.dt-length select {
+    border-radius: 50px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-right: 10px;
+}
+
+.dt-search input {
+    border-radius: 50px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-left: 10px !important;
+}
+
+.dt-search, .dt-info, .dt-length {
+    font-size: 13px;
+}
+
+.dataTables_wrapper .dataTables_scrollBody {
+    overflow: visible !important;
+}
+
+table.dataTable {
+    overflow: visible !important;
+}
+
+.action-buttons .btn-primary {
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #0164FF;
+}
+
+.add-borrowers-container {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-borrowers-container.show {
+    display: flex;
+    opacity: 1;
+}
+
+.add-borrowers-container .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+.add-borrowers-container .title {
+    font-size: 15px;
+    color: royalblue;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  
+  .add-borrowers-container .title::before,.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: royalblue;
+  }
+  
+.add-borrowers-container .title::before {
+    width: 18px;
+    height: 18px;
+    background-color: royalblue;
+  }
+  
+.add-borrowers-container .title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+  }
+  
+.add-borrowers-container .message, .signin {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+  }
+  
+.add-borrowers-container .signin {
+    text-align: center;
+  }
+  
+.add-borrowers-container .signin a {
+    color: royalblue;
+  }
+  
+.add-borrowers-container .signin a:hover {
+    text-decoration: underline royalblue;
+  }
+  
+.add-borrowers-container .flex {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+  }
+  
+.add-borrowers-container .form label {
+    position: relative;
+  }
+  
+.add-borrowers-container .form label .input {
+    width: 100%;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+  }
+  
+.add-borrowers-container .form label .input + span {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    color: grey;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+  }
+  
+.add-borrowers-container .form label .input:placeholder-shown + span {
+    top: 15px;
+    font-size: 0.9em;
+  }
+ 
+.add-borrowers-container .form label .input:valid + span {
+    color: green !important;
+}
+
+.add-borrowers-container .form label .input:invalid + span {
+    color: grey !important;
+}
+
+  /* Move label up when focused or input is NOT empty */
+.add-borrowers-container .form label .input:focus + span,
+.add-borrowers-container .form label .input:not(:placeholder-shown) + span {
+  top: 40px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+/* Optional: style the default span position */
+.add-borrowers-container .form label span {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: 0.2s ease all;
+  pointer-events: none;
+}
+
+
+.add-borrowers-container .submit {
+    border: none;
+    outline: none;
+    background-color: royalblue;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    transform: .3s ease;
+  }
+  
+.add-borrowers-container .submit:hover {
+    background-color: rgb(56, 90, 194);
+  }
+  
+  @keyframes pulse {
+    from {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+  
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }

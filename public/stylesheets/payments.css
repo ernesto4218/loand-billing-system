@@ -1,0 +1,277 @@
+.maincontainer, .payments {
+    display: flex;
+    flex-direction: row;
+    min-width: 100%;
+    justify-content: left;
+    margin: 0;
+}
+
+body {
+    overflow-x: hidden; /* prevent page from scrolling sideways */
+}
+
+.second_container {
+    padding: 20px;
+}
+
+.payments {
+    flex-direction: column;
+}
+
+.tablecontainer {
+    width: 80vw;
+}
+
+/* custom style */
+#paymentsTable_wrapper {
+    width: 100%;
+}
+
+
+#paymentsTable_wrapper td {
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    text-align: left !important;
+}
+
+#paymentsTable_wrapper thead th {
+    font-size: 11px !important;
+    text-align: left;
+}
+
+table.dataTable thead {
+    /* z-index: 1; */
+    position: relative;
+}
+
+/* Ensure stacking context */
+#paymentsTable_wrapper thead {
+    position: relative;
+    /* z-index: 1; */
+}
+
+#paymentsTable_wrapper tbody {
+    position: relative;
+    /* z-index: 2; */
+}
+
+/* Scroll area fix if you're using scrollY */
+.dataTables_scrollBody {
+    overflow: visible !important;
+    position: relative;
+    /* z-index: 3; */
+}
+
+/* Optional: ensure dropdown is above all */
+.dropdown {
+    position: static;
+    visibility: visible !important;
+    margin-right: 80px;
+    align-self: center;
+}
+
+
+.dt-length select {
+    border-radius: 50px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-right: 10px;
+}
+
+.dt-search input {
+    border-radius: 50px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-left: 10px !important;
+}
+
+.dt-search, .dt-info, .dt-length {
+    font-size: 13px;
+}
+
+.dataTables_wrapper .dataTables_scrollBody {
+    overflow: visible !important;
+    position: relative;
+    /* z-index: 3; */
+}
+
+table.dataTable {
+    overflow: visible !important;
+}
+/* 
+td {
+    overflow: visible !important;
+} */
+
+.action-buttons .btn-primary {
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #0164FF;
+}
+
+.add-payments-container {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-payments-container.show {
+    display: flex;
+    opacity: 1;
+}
+
+.add-payments-container .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+.add-payments-container .title {
+    font-size: 15px;
+    color: royalblue;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  
+  .add-payments-container .title::before,.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: royalblue;
+  }
+  
+.add-payments-container .title::before {
+    width: 18px;
+    height: 18px;
+    background-color: royalblue;
+  }
+  
+.add-payments-container .title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+  }
+  
+.add-payments-container .message, .signin {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+  }
+  
+.add-payments-container .signin {
+    text-align: center;
+  }
+  
+.add-payments-container .signin a {
+    color: royalblue;
+  }
+  
+.add-payments-container .signin a:hover {
+    text-decoration: underline royalblue;
+  }
+  
+.add-payments-container .flex {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+  }
+  
+.add-payments-container .form label {
+    position: relative;
+  }
+  
+.add-payments-container .form label .input {
+    width: 100%;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+  }
+  
+.add-payments-container .form label .input + span {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+    color: grey;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+  }
+  
+.add-payments-container .form label .input:placeholder-shown + span {
+    top: 15px;
+    font-size: 0.9em;
+  }
+ 
+.add-payments-container .form label .input:valid + span {
+    color: green !important;
+}
+
+.add-payments-container .form label .input:invalid + span {
+    color: grey !important;
+}
+
+  /* Move label up when focused or input is NOT empty */
+.add-payments-container .form label .input:focus + span,
+.add-payments-container .form label .input:not(:placeholder-shown) + span {
+  top: 40px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+/* Optional: style the default span position */
+.add-payments-container .form label span {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: 0.2s ease all;
+  pointer-events: none;
+}
+
+
+.add-payments-container .submit {
+    border: none;
+    outline: none;
+    background-color: royalblue;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    transform: .3s ease;
+  }
+  
+.add-payments-container .submit:hover {
+    background-color: rgb(56, 90, 194);
+  }
+  
+  @keyframes pulse {
+    from {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+  
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }

@@ -1,0 +1,228 @@
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/payments.css">
+    <link rel="stylesheet" href="/stylesheets/nav.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/datatables/datatables.css">
+    <link rel="stylesheet" href="/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/datatables/buttons.dataTables.css">
+
+
+</head>
+<body>
+    <div class="maincontainer">
+        <%- include('../includes/nav', { path: path }) %>
+        
+        <div class="payments">
+            <%- include('welcomeHeader', { data: data }) %> <!-- Pass 'data' here -->
+            <data class="second_container">
+                <div class="tablecontainer">
+                    <table id="paymentsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Loan ID</th>
+                                <th>Name</th>
+                                <th>Remaining</th>
+                                <th>Monthly</th>
+                                <th>Paid Amount</th>
+                                <th>Mode</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </data>
+        </div>
+    </div>
+
+    <script src="/datatables/jquery.js"></script>
+    <script src="/datatables/datatables.js"></script>
+    <script src="/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/datatables/dataTables.buttons.js"></script>
+    <script src="/datatables/buttons.dataTables.js"></script>
+    <script src="/datatables/pdfmake.min.js"></script>
+    <script src="/datatables/vfs_fonts.js"></script>
+    <script src="/datatables/buttons.html5.min.js"></script>
+
+
+    <script>
+        let payments = JSON.parse(`<%- JSON.stringify(payments) %>`);
+        
+        const Loans_container = document.querySelector('.add-loans-container');
+        const addLoansForm = document.getElementById('addLoansForm');
+        const editLoansForm = document.getElementById('editLoansForm');
+        const adjustpaymentForm = document.querySelector('#adjust-LoansForm');
+
+        console.log(payments);
+        $(document).ready( function () {
+            let table = $('#paymentsTable').DataTable({
+                    pageLength: 10,
+                    paging: true,
+                    scrollX: true,
+                    order: [[0, 'desc']],
+                    layout: {
+                        topStart: [
+                            {
+                                buttons: [
+                                    {
+                                        extend: 'copy',
+                                        className: 'btn btn-secondary btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)' // exclude last column
+                                        }
+                                    },
+                                    {
+                                        extend: 'csv',
+                                        className: 'btn btn-success btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)'
+                                        }
+                                    },
+                                    {
+                                        extend: 'excel',
+                                        className: 'btn btn-primary btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)'
+                                        }
+                                    },
+                                    {
+                                        extend: 'pdf',
+                                        className: 'btn btn-danger btn-sm me-2',
+                                        exportOptions: {
+                                            columns: ':not(:last-child)'
+                                        }
+                                    },
+                                ]
+                            },
+                            'pageLength' // Add pageLength dropdown
+                        ],
+                        topEnd: ['search'], // Add search bar on the right
+                        bottomEnd: ['info', 'paging'] // Add pagination and info text at the bottom
+                    },
+                    columnDefs: [
+                        { width: "150px", targets: [2, 3, 4, 5, 6, 7] }, // Set custom column widths
+                        { width: "50px", targets: [0, 1] },
+                        { width: "200px", targets: 8 }
+                    ]
+                });
+
+            // Add Bootstrap styles to all DataTables buttons
+            table.buttons().each(function(button, index) {
+                $(table.buttons(index).nodes()).removeClass('dt-button').addClass('btn btn-primary btn-sm me-10');
+            });
+
+            $('#paymentsTable').on('click', '.print-btn', function () {
+                var row = $(this).closest('tr'); // Get the row that the Print button is in
+                var rowContent = row.clone(); // Clone the row content to prepare it for printing
+                
+                // Remove the "Print" button from the row (if you still want it in the print)
+                rowContent.find('.print-btn').remove();
+                
+                // Open a new window or tab to print the content
+                var printWindow = window.open('', '_blank');
+                printWindow.document.write('<html><head><title>Report</title>');
+                
+                // Add CSS for better print styling
+                printWindow.document.write(`
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            padding: 0;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        table th, table td {
+                            padding: 8px;
+                            text-align: left;
+                            border: 1px solid #ddd;
+                        }
+                        table th {
+                            background-color: #f4f4f4;
+                        }
+                        .print-header {
+                            font-size: 18px;
+                            text-align: center;
+                            font-weight: bold;
+                            margin-bottom: 20px;
+                        }
+                        .no-print {
+                            display: none;
+                        }
+                    </style>
+                `);
+                
+                printWindow.document.write('</head><body>');
+                
+                // Optional: Add a header before the table (you can customize the text)
+                printWindow.document.write('<div class="print-header">Payment Report</div>');
+                
+                // Add the table header, excluding the last column (Actions column)
+                var tableHeader = $('#paymentsTable thead tr').clone(); // Get the header row HTML
+                tableHeader.find('th:last').remove(); // Remove the last column (Actions header)
+                
+                // Add the row content, excluding the last column (Actions data)
+                rowContent.find('td:last').remove(); // Remove the last column (Actions data)
+                
+                // Write the table with the updated header and content
+                printWindow.document.write('<table><thead>' + tableHeader.html() + '</thead><tbody>' + rowContent.html() + '</tbody></table>');
+                
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print(); // Trigger the print dialog
+            });
+
+            if (payments) {
+
+                const dataTable = $('#paymentsTable').DataTable();
+
+                // Clear existing data
+                dataTable.clear();
+
+                // Add new rows
+                payments.forEach(payment => {
+                    dataTable.row.add([
+                        payment.id,
+                        payment.loan_id,
+                        payment.name,
+                        "₱" + payment.remaining,
+                        "₱" + payment.monthly,
+                        "₱" + payment.pay_amount,
+                        payment.mode,
+                        new Date(payment.date_added).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                        `
+                            <div class="action_table_btn">
+                                <button type="button" class="print-btn btn btn-sm btn-primary" style="font-size: 11px;">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Print</button>
+                            </div>   
+                        `
+
+                    ]);
+
+                });
+
+                // Redraw the table with new data
+                dataTable.draw();
+            }
+
+            if (role === 'Loan Officer') {
+                // borrowerNav.parentElement.remove();
+                // accountsNav.parentElement.remove();
+            } else if (role === 'Cashier') {
+                document.querySelectorAll("#loansTable .delete-btn").forEach(el => el.remove());
+                document.querySelectorAll("#loansTable .edit-btn").forEach(el => el.remove());
+
+            }
+        } );
+    </script>
+</body>
